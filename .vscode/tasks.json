@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "/home/remy/Documents/runanalystapp:runapp",
+			"script": "app:run",
+			"description": "Runs this project as a JVM application",
+			"group": "application",
+			"project": "app",
+			"buildFile": "/home/remy/Documents/runanalyst/app/build.gradle.kts",
+			"rootProject": "runanalyst",
+			"projectFolder": "/home/remy/Documents/runanalyst",
+			"workspaceFolder": "/home/remy/Documents/runanalyst",
+			"args": "--args 'gpx/activity_10009670493.gpx gpx/activity_10009670326.gpx'",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: runanalyst"
+		}
+	]
+}
