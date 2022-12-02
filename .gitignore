@@ -1,6 +1,7 @@
 # Ignore Gradle project-specific cache directory
 .gradle
 gradle/
+gradlew*
 
 # Ignore the directory containing the GPX files
 gpx
