@@ -79,6 +79,35 @@ public class Record {
         return bestDistanceInMeters;
     }
 
+    public String printInfo() {
+        StringBuilder builder = new StringBuilder();
+        if (bestDistanceInMeters < targetInMeters) {
+            builder.append("[" + Utils.formatDistanceInMeters(targetInMeters) + "]: " + "N/A");
+        } else {
+            builder.append("[" + Utils.formatDistanceInMeters(targetInMeters) + "]: "
+                    + Utils.formatTimeInSeconds(getRecordTime()) + "\n");
+            for (int b = bestStartIdx; b <= bestEndIdx; b++) {
+                builder.append(" . " + locations.get(b).getTime());
+            }
+        }
+        return builder.toString();
+    }
+
+    public String printRecordWithDetails() {
+        StringBuilder builder = new StringBuilder();
+        if (bestDistanceInMeters < targetInMeters) {
+            builder.append("[" + Utils.formatDistanceInMeters(targetInMeters) + "]: " + "N/A");
+        } else {
+            builder.append("[" + Utils.formatDistanceInMeters(targetInMeters) + "]: "
+                    + Utils.formatTimeInSeconds(getRecordTime())
+                    + "\n");
+            for (int b = bestStartIdx; b < bestEndIdx + 1; b++) {
+                builder.append(". " + locations.get(b).getTime() + "\n");
+            }
+        }
+        return builder.toString();
+    }
+
     @Override
     public String toString() {
         if (bestDistanceInMeters < targetInMeters) {

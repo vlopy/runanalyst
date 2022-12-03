@@ -2,7 +2,6 @@ package runanalyst;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class RollingRecords {
     private List<Record> records = new ArrayList<>();
@@ -20,6 +19,15 @@ public class RollingRecords {
                 r.addLocation(loc);
             }
         }
+    }
+
+    public String printRecordsWithDetails() {
+        StringBuilder builder = new StringBuilder();
+        for (Record r : records) {
+            builder.append(r.printRecordWithDetails() + "\n");
+        }
+        return builder.toString();
+
     }
 
     @Override

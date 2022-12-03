@@ -19,6 +19,7 @@ public class GPXTrack {
         locations.add(loc);
     }
 
+    // Analyze the GPX file
     public void computeTotalDistance() {
         totalDistanceMeters = 0;
         totalTimeSeconds = 0;
@@ -34,6 +35,7 @@ public class GPXTrack {
         records.computeRecords(locations);
     }
 
+    // Setters & Getters of the track
     public void setName(String n) {
         name = n;
     }
@@ -46,6 +48,9 @@ public class GPXTrack {
         return totalTimeSeconds;
     }
 
+    // Retrieve information about the records
+
+    // Display information
     public String printPace() {
         float paceSeconds = totalTimeSeconds / ((float) totalDistanceMeters / 1000);
         return Utils.formatTimeInSeconds((long) paceSeconds);
@@ -59,6 +64,10 @@ public class GPXTrack {
         builder.append("Total Time: " + Utils.formatTimeInSeconds(totalTimeSeconds) + "\n");
         builder.append("Pace: " + printPace() + "\n");
         return builder.toString();
+    }
+
+    public String printRecordsWithDetails() {
+        return records.printRecordsWithDetails();
     }
 
     public String printRecords() {

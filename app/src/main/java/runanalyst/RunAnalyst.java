@@ -17,15 +17,16 @@ public class RunAnalyst {
     public static void main(String[] args) {
         if (args.length > 0) {
             for (String filePath : args) {
-                System.out.println("*** Opening '" + filePath + "' ***");
+                System.out.println("*** Parsing '" + filePath + "' ***");
                 File f = new File(filePath);
                 if (f.exists()) {
-                    System.out.println("*** Parsing '" + filePath + "' ***");
                     GPXParser parser = new GPXParser();
                     try {
                         GPXTrack track = parser.parse(new FileInputStream(f));
                         track.computeTotalDistance();
+                        System.out.println("*** Track Information' " + filePath + "' ***");
                         System.out.println(track.printInfo());
+                        System.out.println("*** Record Information' " + filePath + "' ***");
                         track.computeRecords();
                         System.out.println(track.printRecords());
                     } catch (FileNotFoundException e) {
