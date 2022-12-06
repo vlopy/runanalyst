@@ -1,7 +1,5 @@
 package runanalyst.gpx;
 
-import com.google.common.hash.HashingOutputStream;
-
 public class Utils {
     private static final double EARTH_RADIUS_KM = 6371;
 
@@ -25,7 +23,6 @@ public class Utils {
         long mins = (time - hours * 3600) / 60;
         long seconds = time % 60;
         StringBuilder builder = new StringBuilder();
-
         if (hours > 0) {
             builder.append(hours + "h");
         }
