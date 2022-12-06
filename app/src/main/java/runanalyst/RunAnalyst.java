@@ -12,6 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import runanalyst.gpx.GPXParser;
+import runanalyst.gpx.GPXTrack;
+
 public class RunAnalyst {
 
     public static void main(String[] args) {
@@ -26,9 +29,12 @@ public class RunAnalyst {
                         track.computeTotalDistance();
                         System.out.println("*** Track Information' " + filePath + "' ***");
                         System.out.println(track.printInfo());
-                        System.out.println("*** Record Information' " + filePath + "' ***");
                         track.computeRecords();
+                        System.out.println("*** Record Information' " + filePath + "' ***");
                         System.out.println(track.printRecords());
+                        track.computeSamples();
+                        System.out.println("*** Samples Information' " + filePath + "' ***");
+                        System.out.println(track.printSamples());
                     } catch (FileNotFoundException e) {
                         System.err.println("Reading the file failed: " + e.getMessage());
                         e.printStackTrace();

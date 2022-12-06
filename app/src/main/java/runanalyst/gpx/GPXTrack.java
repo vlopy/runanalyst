@@ -1,7 +1,8 @@
-package runanalyst;
+package runanalyst.gpx;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GPXTrack {
@@ -10,6 +11,8 @@ public class GPXTrack {
     private int totalDistanceMeters = 0;
     private long totalTimeSeconds = 0;
     private final RollingRecords records;
+    private final int SAMPLE_SIZE_METERS = 50;
+    private final List<Sample> samples = new LinkedList<>();
 
     public GPXTrack() {
         records = new RollingRecords(100, 800, 1000, 1500, 5000);
@@ -31,6 +34,26 @@ public class GPXTrack {
         }
     }
 
+    public void computeSamples() {
+        int distance = 0;
+        long time = 0;
+        int number = 0;
+        for (int i = 1; i < locations.size(); i++) {
+            distance += Utils.distanceInMeters(locations.get(i - 1), locations.get(i));
+            time += Duration.between(locations.get(i - 1).getTime(), locations.get(i).getTime()).getSeconds();
+            number++;
+            if (distance >= SAMPLE_SIZE_METERS) {
+                samples.add(new Sample(distance, (int) time, number));
+                distance = 0;
+                time = 0;
+                number = 0;
+            }
+        }
+        if (distance > 0) {
+            samples.add(new Sample(distance, (int) time, number));
+        }
+    }
+
     public void computeRecords() {
         records.computeRecords(locations);
     }
@@ -47,8 +70,6 @@ public class GPXTrack {
     public long getTotalTimeSeconds() {
         return totalTimeSeconds;
     }
-
-    // Retrieve information about the records
 
     // Display information
     public String printPace() {
@@ -72,6 +93,16 @@ public class GPXTrack {
 
     public String printRecords() {
         return records.toString();
+    }
+
+    public String printSamples() {
+        StringBuilder builder = new StringBuilder();
+        int totalDistance = 0;
+        for (Sample s : samples) {
+            totalDistance += s.getDistanceInMeters();
+            builder.append(Utils.formatDistanceInMeters(totalDistance) + ": " + s.toString() + "\n");
+        }
+        return builder.toString();
     }
 
     @Override

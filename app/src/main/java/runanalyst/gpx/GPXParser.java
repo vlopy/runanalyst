@@ -1,4 +1,4 @@
-package runanalyst;
+package runanalyst.gpx;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,5 +19,9 @@ public class GPXParser {
     GPXHandler handler = new GPXHandler();
     saxParser.parse(gpxStream, handler);
     return handler.getTrack();
+  }
+
+  public void saveData() {
+
   }
 }

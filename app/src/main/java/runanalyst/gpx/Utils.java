@@ -1,4 +1,4 @@
-package runanalyst;
+package runanalyst.gpx;
 
 import com.google.common.hash.HashingOutputStream;
 

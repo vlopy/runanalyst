@@ -1,4 +1,4 @@
-package runanalyst;
+package runanalyst.gpx;
 
 import java.util.ArrayList;
 import java.util.List;

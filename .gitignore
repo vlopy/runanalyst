@@ -4,7 +4,7 @@ gradle/
 gradlew*
 
 # Ignore the directory containing the GPX files
-gpx
+gpxfiles
 # Ignore Gradle build output directory
 build
 # Ignore compiled files
