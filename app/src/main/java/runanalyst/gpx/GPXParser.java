@@ -20,8 +20,4 @@ public class GPXParser {
     saxParser.parse(gpxStream, handler);
     return handler.getTrack();
   }
-
-  public void saveData() {
-
-  }
 }
