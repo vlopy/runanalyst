@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -14,34 +15,67 @@ import org.xml.sax.SAXException;
 
 import runanalyst.gpx.GPXParser;
 import runanalyst.gpx.GPXTrack;
+import runanalyst.storage.StorageException;
+import runanalyst.storage.database.MySQLConnector;
 
 public class RunAnalyst {
 
     public static void main(String[] args) {
         if (args.length > 0) {
+            // Initialize the persistent storage to save the information
+            MySQLConnector connector = null;
+            try {
+                System.out.println("Saving data to the database");
+                connector = new MySQLConnector(
+                        "jdbc:mysql://127.0.0.1:3306/runanalyst", "root", "runpwd");
+                connector.init();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (StorageException e) {
+                e.printStackTrace();
+            }
+            // Parse the files
+            boolean verbose = false;
             for (String filePath : args) {
                 System.out.println("*** Parsing '" + filePath + "' ***");
                 File f = new File(filePath);
                 if (f.exists()) {
+                    // Read the GPX file
                     GPXParser parser = new GPXParser();
                     try {
                         GPXTrack track = parser.parse(new FileInputStream(f));
                         track.computeTotalDistance();
-                        System.out.println("*** Track Information' " + filePath + "' ***");
-                        System.out.println(track.printInfo());
+                        if (verbose) {
+                            System.out.println("*** Track Information' " + filePath + "' ***");
+                            System.out.println(track.printInfo());
+                        }
                         track.computeRecords();
-                        System.out.println("*** Record Information' " + filePath + "' ***");
-                        System.out.println(track.printRecords());
+                        if (verbose) {
+                            System.out.println("*** Record Information' " + filePath + "' ***");
+                            System.out.println(track.printRecords());
+                        }
                         track.computeSamples();
-                        System.out.println("*** Samples Information' " + filePath + "' ***");
-                        System.out.println(track.printSamples());
+                        if (verbose) {
+                            System.out.println("*** Samples Information' " + filePath + "' ***");
+                            System.out.println(track.printSamples());
+                        }
+                        if (connector != null) {
+                            connector.save(track);
+                        }
                     } catch (FileNotFoundException e) {
-                        System.err.println("Reading the file failed: " + e.getMessage());
+                        System.out.println("Reading the file failed: " + e.getMessage());
                         e.printStackTrace();
                     } catch (ParserConfigurationException | SAXException | IOException e) {
-                        System.err.println("Parsing the file failed: " + e.getMessage());
+                        System.out.println("Parsing the file failed: " + e.getMessage());
+                        e.printStackTrace();
+                    } catch (StorageException e) {
+                        System.out.println("Saving the file failed: " + e.getMessage());
                         e.printStackTrace();
                     }
+                } else {
+                    System.err.println("File '" + filePath + "' does not exist!");
                 }
             }
         } else {

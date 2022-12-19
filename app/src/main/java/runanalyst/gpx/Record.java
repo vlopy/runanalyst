@@ -79,6 +79,10 @@ public class Record {
         return bestDistanceInMeters;
     }
 
+    public boolean isComplete() {
+        return bestDistanceInMeters >= targetInMeters;
+    }
+
     public String printInfo() {
         StringBuilder builder = new StringBuilder();
         if (bestDistanceInMeters < targetInMeters) {

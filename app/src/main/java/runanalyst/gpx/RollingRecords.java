@@ -21,6 +21,10 @@ public class RollingRecords {
         }
     }
 
+    public List<Record> getRecords() {
+        return records;
+    }
+
     public String printRecordsWithDetails() {
         StringBuilder builder = new StringBuilder();
         for (Record r : records) {

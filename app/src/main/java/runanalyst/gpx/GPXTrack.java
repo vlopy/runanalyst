@@ -10,12 +10,12 @@ public class GPXTrack {
     private List<GPXLocation> locations = new ArrayList<>();
     private int totalDistanceMeters = 0;
     private long totalTimeSeconds = 0;
-    private final RollingRecords records;
+    private final RollingRecords allRecords;
     private final int SAMPLE_SIZE_METERS = 50;
     private final List<Sample> samples = new LinkedList<>();
 
     public GPXTrack() {
-        records = new RollingRecords(100, 800, 1000, 1500, 5000);
+        allRecords = new RollingRecords(100, 800, 1000, 1500, 5000);
     }
 
     public void addLocation(GPXLocation loc) {
@@ -55,12 +55,20 @@ public class GPXTrack {
     }
 
     public void computeRecords() {
-        records.computeRecords(locations);
+        allRecords.computeRecords(locations);
     }
 
     // Setters & Getters of the track
     public void setName(String n) {
         name = n;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getFirstTime() {
+        return locations.get(0).getTime().getEpochSecond();
     }
 
     public int getTotalDistanceMeters() {
@@ -69,6 +77,10 @@ public class GPXTrack {
 
     public long getTotalTimeSeconds() {
         return totalTimeSeconds;
+    }
+
+    public List<Record> getRecords() {
+        return allRecords.getRecords();
     }
 
     // Display information
@@ -88,11 +100,11 @@ public class GPXTrack {
     }
 
     public String printRecordsWithDetails() {
-        return records.printRecordsWithDetails();
+        return allRecords.printRecordsWithDetails();
     }
 
     public String printRecords() {
-        return records.toString();
+        return allRecords.toString();
     }
 
     public String printSamples() {
