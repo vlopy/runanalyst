@@ -8,11 +8,11 @@
 			"description": "Runs this project as a JVM application",
 			"group": "application",
 			"project": "app",
-			"buildFile": "/home/remy/Documents/runanalyst/app/build.gradle.kts",
+			"buildFile": "/home/remy/Documents/runanalyst/app/build.gradle",
 			"rootProject": "runanalyst",
 			"projectFolder": "/home/remy/Documents/runanalyst",
 			"workspaceFolder": "/home/remy/Documents/runanalyst",
-			"args": "--args 'gpx/activity_10009670493.gpx gpx/activity_10009670326.gpx'",
+			"args": "--args '../gpxfiles/activity_10009670493.gpx ../gpxfiles/activity_10009670326.gpx'",
 			"javaDebug": false,
 			"problemMatcher": [
 				"$gradle"

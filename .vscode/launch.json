@@ -15,7 +15,8 @@
             "name": "Launch RunAnalyst",
             "request": "launch",
             "mainClass": "runanalyst.RunAnalyst",
-            "projectName": "app"
+            "projectName": "app",
+            "args": "gpxfiles/activity_10009670493.gpx gpxfiles/activity_10009670326.gpx"
         }
     ]
 }
