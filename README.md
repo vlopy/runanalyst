@@ -1,9 +1,10 @@
 # runanalyst
-Analyze GPX files to compute run stats
+Analyze GPX files to compute run stats.
 
 # Test the code with docker
 - Build the container
 ```
+cd docker
 docker build -t mysql-test .
 ```
 - Start the container

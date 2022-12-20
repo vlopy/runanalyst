@@ -8,10 +8,10 @@
 			"description": "Runs this project as a JVM application",
 			"group": "application",
 			"project": "app",
-			"buildFile": "/home/remy/Documents/runanalyst/app/build.gradle",
+			"buildFile": "/home/remy/Documents/runanalyst/backend/app/build.gradle",
 			"rootProject": "runanalyst",
-			"projectFolder": "/home/remy/Documents/runanalyst",
-			"workspaceFolder": "/home/remy/Documents/runanalyst",
+			"projectFolder": "/home/remy/Documents/runanalyst/backend/",
+			"workspaceFolder": "/home/remy/Documents/runanalyst/backend/",
 			"args": "--args '../gpxfiles/activity_10009670493.gpx ../gpxfiles/activity_10009670326.gpx'",
 			"javaDebug": false,
 			"problemMatcher": [
