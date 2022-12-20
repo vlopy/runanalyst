@@ -1,7 +1,7 @@
 # runanalyst
 Analyze GPX files to compute run stats.
 
-# Test the code with docker
+# Test the backend with docker (Java + MySQL)
 - Build the container
 ```
 cd docker
@@ -21,3 +21,25 @@ mysql -uroot -prunpwd -h 127.0.0.1
 CREATE DATABASE runanalyst;
 ```
 - Analyze the GPX files
+
+# Test the frontend (Python)
+- Install Python tools
+```
+sudo apt install -y python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
+```
+- Create a virtual environment
+```
+mkdir env
+cd env
+python3 -m venv env
+```
+- Activate your virtual environment
+```
+source env/bin/activate
+# To deactivate the environment, run 'deactivate'
+```
+- Install flask
+```
+pip install flask
+```
+
