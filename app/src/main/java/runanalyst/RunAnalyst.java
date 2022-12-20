@@ -15,6 +15,8 @@ import org.xml.sax.SAXException;
 
 import runanalyst.gpx.GPXParser;
 import runanalyst.gpx.GPXTrack;
+import runanalyst.properties.PropertyException;
+import runanalyst.properties.PropertyFile;
 import runanalyst.storage.StorageException;
 import runanalyst.storage.database.MySQLConnector;
 
@@ -22,61 +24,73 @@ public class RunAnalyst {
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            // Initialize the persistent storage to save the information
-            MySQLConnector connector = null;
+            // Read the mandatory property file
             try {
-                System.out.println("Saving data to the database");
-                connector = new MySQLConnector(
-                        "jdbc:mysql://127.0.0.1:3306/runanalyst", "root", "runpwd");
-                connector.init();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (StorageException e) {
-                e.printStackTrace();
-            }
-            // Parse the files
-            boolean verbose = false;
-            for (String filePath : args) {
-                System.out.println("*** Parsing '" + filePath + "' ***");
-                File f = new File(filePath);
-                if (f.exists()) {
-                    // Read the GPX file
-                    GPXParser parser = new GPXParser();
-                    try {
-                        GPXTrack track = parser.parse(new FileInputStream(f));
-                        track.computeTotalDistance();
-                        if (verbose) {
-                            System.out.println("*** Track Information' " + filePath + "' ***");
-                            System.out.println(track.printInfo());
-                        }
-                        track.computeRecords();
-                        if (verbose) {
-                            System.out.println("*** Record Information' " + filePath + "' ***");
-                            System.out.println(track.printRecords());
-                        }
-                        track.computeSamples();
-                        if (verbose) {
-                            System.out.println("*** Samples Information' " + filePath + "' ***");
-                            System.out.println(track.printSamples());
-                        }
-                        if (connector != null) {
-                            connector.save(track);
-                        }
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Reading the file failed: " + e.getMessage());
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException | SAXException | IOException e) {
-                        System.out.println("Parsing the file failed: " + e.getMessage());
-                        e.printStackTrace();
-                    } catch (StorageException e) {
-                        System.out.println("Saving the file failed: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.err.println("File '" + filePath + "' does not exist!");
+                PropertyFile.init();
+                PropertyFile properties = PropertyFile.getInstance();
+                // Initialize the persistent storage to save the information
+                MySQLConnector connector = null;
+                try {
+                    System.out.println("Saving data to the database");
+                    connector = new MySQLConnector(
+                            properties.getDatabaseURL(), properties.getDatabaseUser(),
+                            properties.getDatabasePassword());
+                    connector.init();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (StorageException e) {
+                    e.printStackTrace();
                 }
+                // Parse the files
+                boolean verbose = false;
+                for (String filePath : args) {
+                    System.out.println("*** Parsing '" + filePath + "' ***");
+                    File f = new File(filePath);
+                    if (f.exists()) {
+                        // Read the GPX file
+                        GPXParser parser = new GPXParser();
+                        try {
+                            GPXTrack track = parser.parse(new FileInputStream(f));
+                            track.computeTotalDistance();
+                            if (verbose) {
+                                System.out.println("*** Track Information' " + filePath + "' ***");
+                                System.out.println(track.printInfo());
+                            }
+                            track.computeRecords();
+                            if (verbose) {
+                                System.out.println("*** Record Information' " + filePath + "' ***");
+                                System.out.println(track.printRecords());
+                            }
+                            track.computeSamples();
+                            if (verbose) {
+                                System.out.println("*** Samples Information' " + filePath + "' ***");
+                                System.out.println(track.printSamples());
+                            }
+                            if (connector != null) {
+                                connector.save(track);
+                            }
+                        } catch (FileNotFoundException e) {
+                            System.out.println("Reading the file failed: " + e.getMessage());
+                            e.printStackTrace();
+                        } catch (ParserConfigurationException | SAXException | IOException e) {
+                            System.out.println("Parsing the file failed: " + e.getMessage());
+                            e.printStackTrace();
+                        } catch (StorageException e) {
+                            System.out.println("Saving the file failed: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("File '" + filePath + "' does not exist!");
+                    }
+                }
+            } catch (IOException propertyEx) {
+                System.out.println("The property file 'runanalyst.properties' is missing!");
+                propertyEx.printStackTrace();
+            } catch (PropertyException e1) {
+                System.out.println("The property file 'runanalyst.properties' is misconfigured!");
+                e1.printStackTrace();
             }
         } else {
             System.err.println("Please, add a file in argument.");

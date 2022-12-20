@@ -6,9 +6,9 @@ import java.util.List;
 public class RollingRecords {
     private List<Record> records = new ArrayList<>();
 
-    public RollingRecords(int... pDistInMeters) {
-        for (int i = 0; i < pDistInMeters.length; i++) {
-            records.add(new Record(pDistInMeters[i]));
+    public RollingRecords(List<Integer> pDistInMeters) {
+        for (Integer recordDistance : pDistInMeters) {
+            records.add(new Record(recordDistance));
         }
     }
 

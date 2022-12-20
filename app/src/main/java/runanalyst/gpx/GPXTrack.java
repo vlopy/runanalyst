@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import runanalyst.properties.PropertyFile;
+
 public class GPXTrack {
     private String name = "anonymous";
     private List<GPXLocation> locations = new ArrayList<>();
@@ -15,7 +17,8 @@ public class GPXTrack {
     private final List<Sample> samples = new LinkedList<>();
 
     public GPXTrack() {
-        allRecords = new RollingRecords(100, 800, 1000, 1500, 5000);
+        PropertyFile props = PropertyFile.getInstance();
+        allRecords = new RollingRecords(props.getRecordList());
     }
 
     public void addLocation(GPXLocation loc) {
