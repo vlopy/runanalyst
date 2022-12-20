@@ -86,6 +86,10 @@ public class GPXTrack {
         return allRecords.getRecords();
     }
 
+    public List<Sample> getSamples() {
+        return samples;
+    }
+
     // Display information
     public String printPace() {
         float paceSeconds = totalTimeSeconds / ((float) totalDistanceMeters / 1000);
