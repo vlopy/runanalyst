@@ -2,7 +2,6 @@ package runanalyst.storage.database;
 
 import java.sql.Statement;
 import java.util.Calendar;
-import java.util.Date;
 
 import runanalyst.gpx.GPXTrack;
 import runanalyst.gpx.Record;
