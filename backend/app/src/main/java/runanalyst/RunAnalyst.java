@@ -17,6 +17,7 @@ import runanalyst.gpx.GPXParser;
 import runanalyst.gpx.GPXTrack;
 import runanalyst.properties.PropertyException;
 import runanalyst.properties.PropertyFile;
+import runanalyst.storage.PersistentStorage;
 import runanalyst.storage.StorageException;
 import runanalyst.storage.database.MySQLConnector;
 
@@ -29,7 +30,7 @@ public class RunAnalyst {
                 PropertyFile.init();
                 PropertyFile properties = PropertyFile.getInstance();
                 // Initialize the persistent storage to save the information
-                MySQLConnector connector = null;
+                PersistentStorage connector = null;
                 try {
                     System.out.println("Saving data to the database");
                     connector = new MySQLConnector(

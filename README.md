@@ -25,7 +25,7 @@ CREATE DATABASE runanalyst;
 # Test the frontend (Python)
 - Install Python tools
 ```
-sudo apt install -y python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
+sudo apt install -y python3-venv
 ```
 - Create a virtual environment
 ```
