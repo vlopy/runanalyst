@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/bulma.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    {% block javascript %}{% endblock %}
+    <title>RunAnalysT</title>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>

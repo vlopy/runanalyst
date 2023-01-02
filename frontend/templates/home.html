@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function openModal() {
+        document.getElementById("upload-modal").classList.add('is-active');    
+    }
+
+    function closeModal() {
+        document.getElementById("upload-modal").classList.remove('is-active');    
+    }
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <!-- Buttons -->
+  <div class="notification is-primary">
+      <span class="is-size-4 mr-4">Welcome to the RunAnalysT dashboard</span>
+      <div class="is-pulled-right">
+          <a class="button is-warning" onclick="openModal()">Import GPX files</a>
+          <a href="/logout" class="button is-warning">Logout</a>
+      </div>
+  </div>
+  <div class="box" style="height: 76px;">
+    <div class="columns is-pulled-right">
+      <div class="column" style="padding-right: 0;">
+        Display
+      </div>
+      <div class="column">
+        <select onchange="selectBars(this.value)">
+          <option value="totaldistance">total distance</option>
+          <option value="time">time</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!-- Modal to upload  files -->
+  <div id="upload-modal" class="modal">
+      <div class="modal-background" onclick="closeModal()"></div>
+      <div class="modal-content">
+          <form class="button" method="POST" enctype="multipart/form-data" action="/upload">
+              <input type="file" name="file[]" multiple="">
+              <input type="submit" value="add">
+            </form>
+      </div>
+  </div>
+  <!-- Charts -->
+  <div class="columns">
+    <div class="column">
+      <div>
+        <canvas id="myChart1"></canvas>
+      </div>
+    </div>
+    <div class="column">
+      <div>
+        <canvas id="myChart2"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <div>
+        <canvas id="myChart3"></canvas>
+      </div>
+    </div>
+    <div class="column">
+      <div>
+        <canvas id="myChart4"></canvas>
+      </div>
+    </div>
+  </div>
+</div><!-- end container-->
+
+<script src="/static/js/chart.js"></script>
+<script>
+  function selectBars(barUnit) {
+    console.log(barUnit);
+  }
+
+  function formatSeconds(seconds) {
+    let hours = Math.trunc(seconds / 3600);
+    seconds = seconds % 3600;
+    let minutes = Math.trunc(seconds / 60);
+    seconds = seconds % 60;
+    let secondsStr =  String(minutes).padStart(2, "0") + "min" + String(seconds).padStart(2, "0") + "s";
+    if(hours > 0) {
+      return hours + "h" + secondsStr;
+    } else {
+      return secondsStr;
+    }
+  }
+
+  function makeChart(cId, cTitle, cLabel, cColor, cData) {
+    const ctx = document.getElementById(cId);
+    let graphData = [];
+    for(let i = 0; i < cData.date.length; i++) {
+      graphData.push({x: 0, y: cData.distance[i], time: cData.time[i], pace: cData.pace[i] })
+    }
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: cData.date,
+        datasets: [{
+          label: cLabel,
+          data: graphData,
+          backgroundColor: cColor,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: cTitle
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                let result = [
+                  "total distance: " + (context.raw.y / 1000).toFixed(2) + " km",
+                  "time: " + formatSeconds(context.raw.time),
+                  "pace: " + formatSeconds(context.raw.pace) +"/km"
+                ];
+                return result;
+              }
+            }
+          }
+        }//end plugins,
+      }
+    });
+  }
+  // Used chart colors : "#c39bd3" "#76d7c4" "#f9e79f" "#e5e7e9"
+  // Charts: last runs
+  let lastruns_data = {
+    "date": {{lastruns_dt|tojson}},
+    "distance": {{lastruns_d|tojson}},
+    "time": {{lastruns_t|tojson}},
+    "pace": {{lastruns_p|tojson}}
+  };
+  makeChart("myChart1", "Last Runs (total distance)", "Total Distance (km)", "black", lastruns_data);
+</script>
+{% endblock %}
+

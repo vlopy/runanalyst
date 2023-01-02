@@ -9,3 +9,6 @@ gpxfiles
 build
 # Ignore compiled files
 *.class
+# Python environment
+frontend/env
+*/__pycache__
